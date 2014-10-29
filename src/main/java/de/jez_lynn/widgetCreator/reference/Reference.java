@@ -7,6 +7,8 @@ public final class Reference {
 
     public static final String TEMP = "temp";
 
+    public static final String CONFIG = "config\\server-logindata.cfg";
+
     public static final class FTP{
         public static final String SERVER = "*";
         public static final int PORT = 21;
