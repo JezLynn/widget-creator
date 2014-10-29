@@ -10,10 +10,14 @@ public final class Reference {
     public static final String CONFIG = "config\\server-logindata.cfg";
 
     public static final class FTP{
-        public static final String SERVER = "*";
-        public static final int PORT = 21;
-        public static final String USER = "*";
-        public static final String PASS = "*";
+        public static String SERVER = "*";
+        public static int PORT = 21;
+        public static String USER = "*";
+        public static String PASSWORD = "*";
+
+        public static String OUT() {
+            return "Server: " + SERVER + "\nUser: " + USER + "\nPassword: " + PASSWORD + "\nPort: " + PORT;
+        }
     }
 
     public static final class WIDGET{

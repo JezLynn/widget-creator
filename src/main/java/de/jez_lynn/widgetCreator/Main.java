@@ -1,8 +1,11 @@
 package main.java.de.jez_lynn.widgetCreator;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import main.java.de.jez_lynn.widgetCreator.helper.FTPConfig;
+import javafx.stage.WindowEvent;
+import main.java.de.jez_lynn.widgetCreator.handler.Config;
 import main.java.de.jez_lynn.widgetCreator.reference.Reference;
 import main.java.de.jez_lynn.widgetCreator.scenes.FTPConfigureScene;
 import main.java.de.jez_lynn.widgetCreator.scenes.ImageSelectorScene;
@@ -16,7 +19,6 @@ import java.nio.file.Paths;
  */
 public class Main extends Application {
 
-    private FTPConfig ftpConfig;
     private ImageSelectorScene imageSelectorScene;
     private FTPConfigureScene ftpConfigureScene;
     private boolean configExist = true;
@@ -34,8 +36,8 @@ public class Main extends Application {
         File configFile = new File(configPath.toString());
         if (!configFile.exists()) {
             configExist = false;
-            //Config.create(configFile);
-            //ftpConfig = Config.load(configFile);
+        } else {
+            Config.load(configFile);
         }
         File dir = new File(Reference.TEMP);
         if (!dir.exists()) {
@@ -52,16 +54,26 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(final Stage stage) throws Exception {
         imageSelectorScene = new ImageSelectorScene(stage);
-
-        ftpConfigureScene = new FTPConfigureScene(stage);
+        stage.setScene(imageSelectorScene.getScene());
+        stage.setTitle("Projekte erstellen");
+        stage.show();
+        System.out.println(Reference.FTP.OUT());
 
         if (!configExist) {
-            stage.setScene(ftpConfigureScene.getScene());
-        } else
-            stage.setScene(imageSelectorScene.getScene());
-        stage.setTitle("Test");
-        stage.show();
+            Stage ftpConfig = new Stage();
+            ftpConfigureScene = new FTPConfigureScene(ftpConfig);
+            ftpConfig.initModality(Modality.WINDOW_MODAL);
+            ftpConfig.setScene(ftpConfigureScene.getScene());
+            ftpConfig.initOwner(stage.getScene().getWindow());
+            ftpConfig.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    stage.close();
+                }
+            });
+            ftpConfig.show();
+        }
     }
 }

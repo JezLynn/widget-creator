@@ -25,7 +25,7 @@ public final class FTP {
 
     private void connect() throws IOException {
         client.connect(Reference.FTP.SERVER, Reference.FTP.PORT);
-        if(client.login(Reference.FTP.USER, Reference.FTP.PASS)){
+        if (client.login(Reference.FTP.USER, Reference.FTP.PASSWORD)) {
             System.out.println("Logged in");
         }
         client.enterLocalPassiveMode();

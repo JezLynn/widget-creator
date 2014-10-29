@@ -11,9 +11,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import main.java.de.jez_lynn.widgetCreator.handler.Config;
+import main.java.de.jez_lynn.widgetCreator.reference.Reference;
+
+import java.io.File;
 
 /**
  * Created by Michael on 29.10.2014.
@@ -88,7 +94,31 @@ public class FTPConfigureScene {
         save.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO implement saving of FTP-DATA
+                String address = adresseField.getText();
+                String user = userField.getText();
+                String pass = passField.getText();
+                if (address.length() > 0 & user.length() > 0 & pass.length() > 0) {
+                    Reference.FTP.SERVER = address;
+                    Reference.FTP.USER = user;
+                    Reference.FTP.PASSWORD = pass;
+                    File configFile = new File(Reference.CONFIG);
+                    Config.create(configFile);
+                    stage.close();
+                } else {
+                    Stage error = new Stage();
+                    error.initModality(Modality.WINDOW_MODAL);
+                    VBox dialogBox = new VBox();
+                    dialogBox.setPadding(new Insets(15, 12, 15, 12));
+                    dialogBox.setSpacing(10);
+                    Label message = new Label("Es müssen alle Felder \n ausgefüllt werden");
+                    message.setTextFill(Color.web("#F62217"));
+                    message.setFont(new Font("Cambria", 20));
+                    dialogBox.getChildren().add(message);
+                    Scene scene = new Scene(dialogBox);
+                    error.setScene(scene);
+                    error.initOwner(stage.getScene().getWindow());
+                    error.show();
+                }
             }
         });
 
