@@ -2,7 +2,6 @@ package main.java.de.jez_lynn.widgetCreator;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.java.de.jez_lynn.widgetCreator.handler.Config;
 import main.java.de.jez_lynn.widgetCreator.helper.FTPConfig;
 import main.java.de.jez_lynn.widgetCreator.reference.Reference;
 import main.java.de.jez_lynn.widgetCreator.scenes.FTPConfigureScene;
@@ -35,9 +34,8 @@ public class Main extends Application {
         File configFile = new File(configPath.toString());
         if (!configFile.exists()) {
             configExist = false;
-            //TODO Create a new Scene to enter FTP-LOGIN
-            Config.create(configFile);
-            ftpConfig = Config.load(configFile);
+            //Config.create(configFile);
+            //ftpConfig = Config.load(configFile);
         }
         File dir = new File(Reference.TEMP);
         if (!dir.exists()) {

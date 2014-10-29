@@ -23,7 +23,6 @@ public class Imageprocessing {
     }
 
     public File exclusion(String ref) {
-        Path path = Paths.get(ref).getParent();
         Path name = Paths.get(ref).getFileName();
         BufferedImage orig = null;
         try {
@@ -57,7 +56,6 @@ public class Imageprocessing {
     }
 
     public File cut(String ref) {
-        Path path = Paths.get(ref).getParent();
         Path name = Paths.get(ref).getFileName();
         BufferedImage orig = null;
         try {
