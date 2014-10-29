@@ -46,7 +46,7 @@ public class Imageprocessing {
         g2.setComposite(BlendComposite.getInstance(BlendComposite.BlendingMode.EXCLUSION));
         g2.drawImage(overlay, 0, 0, null);
         g2.dispose();
-        File out = new File(Reference.TEMP + "\\1_" + name);
+        File out = new File(Reference.TEMP + "\\" + name);
         try {
             ImageIO.write(result, "jpg", out);
         } catch (IOException e) {
@@ -86,7 +86,7 @@ public class Imageprocessing {
         g2.drawImage(orig, 0, 0, null);
         g2.drawImage(overlay, 0, 0, null);
         g2.dispose();
-        File out = new File(Reference.TEMP + "\\2_" + name);
+        File out = new File(Reference.TEMP + "\\" + name);
         try {
             ImageIO.write(result, "jpg", out);
         } catch (IOException e) {

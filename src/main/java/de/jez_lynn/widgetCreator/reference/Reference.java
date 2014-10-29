@@ -10,10 +10,10 @@ public final class Reference {
     public static final String CONFIG = "config\\server-logindata.cfg";
 
     public static final class FTP{
-        public static String SERVER = "*";
+        public static String SERVER = "";
         public static int PORT = 21;
-        public static String USER = "*";
-        public static String PASSWORD = "*";
+        public static String USER = "";
+        public static String PASSWORD = "";
 
         public static String OUT() {
             return "Server: " + SERVER + "\nUser: " + USER + "\nPassword: " + PASSWORD + "\nPort: " + PORT;
@@ -29,10 +29,10 @@ public final class Reference {
                                                     "<div id=\"content-box\">\n"+
                                                         "<div id=\"first-line\">\n";
 
-        public static final String bigImage =               "<img src=\"http://u.jimdo.com/www70/o/sb3358dd722f93dcc/userlayout/img/marburg.png?t=1413404325\" id=\"marburg\" alt=\"\" name=\"marburg\" /> <a href=\"#food\"></a>\n";
+        public static final String bigImage = "<img src=\"%s\" id=\"%s\" alt=\"\" name=\"%s\" />\n";
 
         public static final String smallImage =             "<div data-content=\"%s\" class=\"grow-small pic\">\n"+
-                                                                "<img src=\"%s\" alt=\"\" />\n"+
+                "<a href=\"#%s\"><img src=\"%s\" alt=\"\" /> </a>\n" +
                                                             "</div>\n"+
                                                         "</div>\n";
 
@@ -51,18 +51,25 @@ public final class Reference {
                                                         "</div>\n";
 
         public static final String sideInformation =    "<div id=\"side-information\">\n"+
-                                                            "<div class=\"text-widget\">\n"+
+                "<div class=\"text-widget\">\n" +
                                                                 "<h1>\n"+
                                                                     "%s\n"+
                                                                 "</h1>\n"+
                                                                 "<p>\n"+
                                                                     "%s\n" +
-                                                                "</p>\n"+
+                "</p>\n" +
                                                             "</div>\n"+
                                                         "</div>\n"+
-                                                        "\n"+
                                                         "<div class=\"clear\">\n"+
                                                         "</div>\n"+
-                                                        "</div>";
+                "</div>";
+
+        public static final String beginProjectDescription = "<div class=\"content-holder-projects\">";
+
+        public static final String projectDescription = "<a name=\"food\"><h1 id=\"food\">%s</h1></a>" +
+                "<p>%s</p>";
+
+        public static final String endProjectDescription = "</div> " +
+                "<div class=\"spacer\"> </div>";
     }
 }

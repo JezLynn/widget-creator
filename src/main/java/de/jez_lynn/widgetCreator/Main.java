@@ -5,7 +5,7 @@ import javafx.event.EventHandler;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import main.java.de.jez_lynn.widgetCreator.handler.Config;
+import main.java.de.jez_lynn.widgetCreator.handler.ConfigHandler;
 import main.java.de.jez_lynn.widgetCreator.reference.Reference;
 import main.java.de.jez_lynn.widgetCreator.scenes.FTPConfigureScene;
 import main.java.de.jez_lynn.widgetCreator.scenes.ImageSelectorScene;
@@ -37,7 +37,7 @@ public class Main extends Application {
         if (!configFile.exists()) {
             configExist = false;
         } else {
-            Config.load(configFile);
+            ConfigHandler.load(configFile);
         }
         File dir = new File(Reference.TEMP);
         if (!dir.exists()) {

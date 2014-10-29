@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import main.java.de.jez_lynn.widgetCreator.handler.Config;
+import main.java.de.jez_lynn.widgetCreator.handler.ConfigHandler;
 import main.java.de.jez_lynn.widgetCreator.reference.Reference;
 
 import java.io.File;
@@ -102,7 +102,7 @@ public class FTPConfigureScene {
                     Reference.FTP.USER = user;
                     Reference.FTP.PASSWORD = pass;
                     File configFile = new File(Reference.CONFIG);
-                    Config.create(configFile);
+                    ConfigHandler.create(configFile);
                     stage.close();
                 } else {
                     Stage error = new Stage();

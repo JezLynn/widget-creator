@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +20,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import main.java.de.jez_lynn.widgetCreator.handler.FTP;
+import javafx.stage.WindowEvent;
+import main.java.de.jez_lynn.widgetCreator.handler.FTPUploadHandler;
 import main.java.de.jez_lynn.widgetCreator.handler.Imageprocessing;
 import main.java.de.jez_lynn.widgetCreator.helper.UploadData;
 import main.java.de.jez_lynn.widgetCreator.reference.Reference;
@@ -45,8 +45,10 @@ public class ImageSelectorScene {
     private ObservableList<String> items = FXCollections.observableArrayList();
     private HashMap<String, UploadData> data = new HashMap<String, UploadData>(4);
     private ImageView image;
+    private ProjectDescriptionScene descriptionScene;
 
     public ImageSelectorScene(Stage stage) {
+        descriptionScene = new ProjectDescriptionScene(stage);
         BorderPane pane = new BorderPane();
 
         GridPane top = topControl(stage);
@@ -156,17 +158,15 @@ public class ImageSelectorScene {
         list.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Image imageLoaded = new Image(data.get(list.getSelectionModel().getSelectedItem()).image.toURI().toString(), 200, 150, true, true);
-                image.setImage(imageLoaded);
+                if (list.getSelectionModel().getSelectedItem() != null)
+                    descriptionScene.updateScene(data.get(list.getSelectionModel().getSelectedItem()));
             }
         });
         scrollPane.setContent(list);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         grid.add(scrollPane, 0, 0);
-
-        image = new ImageView();
-        grid.add(image, 1, 0);
+        grid.add(descriptionScene.getScene(), 1, 0);
         return grid;
     }
 
@@ -182,14 +182,25 @@ public class ImageSelectorScene {
             @Override
             public void handle(ActionEvent event) {
                 Iterator<Map.Entry<String, UploadData>> it = data.entrySet().iterator();
-                FTP ftp = new FTP();
+                FTPUploadHandler ftp = new FTPUploadHandler();
                 while (it.hasNext()) {
                     Map.Entry<String, UploadData> pair = it.next();
                     ftp.transferData(pair.getValue().image);
-                    it.remove();
+                    //it.remove();
                 }
                 ftp.close();
-                close(stage);
+                Stage htmlCode = new Stage();
+                HTMLCodeScene htmlCodeScene = new HTMLCodeScene(htmlCode, data);
+                htmlCode.initModality(Modality.WINDOW_MODAL);
+                htmlCode.setScene(htmlCodeScene.getScene());
+                htmlCode.initOwner(stage.getScene().getWindow());
+                htmlCode.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent event) {
+                        close(stage);
+                    }
+                });
+                htmlCode.show();
             }
         });
 

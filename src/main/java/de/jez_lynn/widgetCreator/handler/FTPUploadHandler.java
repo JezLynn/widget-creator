@@ -9,11 +9,11 @@ import java.nio.file.Paths;
 /**
  * Created by Michael on 27.10.2014.
  */
-public final class FTP {
+public final class FTPUploadHandler {
 
     FTPClient client;
 
-    public FTP(){
+    public FTPUploadHandler() {
         client = new FTPClient();
         System.out.println("Created FTP-Client");
         try {
@@ -32,7 +32,7 @@ public final class FTP {
         client.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
     }
 
-    public boolean transferData(File localFile){
+    public boolean transferData(File localFile) {
         System.out.println("Transfering: " + localFile.getAbsolutePath());
         String remotePath = "/images/" + Paths.get(localFile.getAbsolutePath()).getFileName().toString();
         System.out.println("To: " + remotePath);
@@ -46,19 +46,19 @@ public final class FTP {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if(is != null)
+            if (is != null)
                 try {
                     is.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
         }
-        if(done) System.out.println("SUCCESS");
+        if (done) System.out.println("SUCCESS");
         return done;
     }
 
-    public void close(){
-        if(client.isConnected()){
+    public void close() {
+        if (client.isConnected()) {
             try {
                 client.logout();
                 client.disconnect();

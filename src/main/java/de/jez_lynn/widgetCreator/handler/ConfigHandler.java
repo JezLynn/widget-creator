@@ -7,7 +7,7 @@ import java.io.*;
 /**
  * Created by Michael on 29.10.2014.
  */
-public class Config {
+public class ConfigHandler {
 
     private static final String OPEN = "ftp {";
 
@@ -40,15 +40,14 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //TODO Still something to do
     }
 
-    public static void create(File file){
+    public static void create(File file) {
         OutputStreamWriter out = null;
         StringBuilder sb = new StringBuilder();
         buildConfigFile(sb);
         try {
-            out =  new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)));
+            out = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(file)));
             out.write(sb.toString());
             out.close();
         } catch (IOException e) {
@@ -56,7 +55,7 @@ public class Config {
         }
     }
 
-    private static void buildConfigFile(StringBuilder sb){
+    private static void buildConfigFile(StringBuilder sb) {
         sb.append(OPEN);
         sb.append(COMMENTARY).append("FTP Server Address");
         sb.append(NEWLINE).append("server=").append(Reference.FTP.SERVER);
