@@ -5,6 +5,7 @@ import main.java.de.jez_lynn.widgetCreator.reference.Reference;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,45 @@ public class Imageprocessing {
 
     public static Imageprocessing getInstance() {
         return processer;
+    }
+
+    /**
+     * scale image
+     *
+     * @param ref path to image to scale
+     * @param imageType type of image
+     * @param dWidth width of destination image
+     * @param dHeight height of destination image
+     * @return scaled image as File Object
+     */
+    public static File scale(String ref, int imageType, int dWidth, int dHeight) {
+        Path name = Paths.get(ref).getFileName();
+        BufferedImage orig = null;
+        try {
+            orig = ImageIO.read(new File(ref));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BufferedImage dbi = null;
+        if (orig != null) {
+            double fWidth = (double) dWidth / (double) orig.getWidth();
+            double fHeight = (double) dHeight / (double) orig.getHeight();
+            dbi = new BufferedImage(dWidth, dHeight, imageType);
+            Graphics2D g = dbi.createGraphics();
+            AffineTransform at = AffineTransform.getScaleInstance(fWidth, fHeight);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.drawRenderedImage(orig, at);
+            g.dispose();
+        }
+        File out = new File(Reference.TEMP + "\\" + name);
+        try {
+            ImageIO.write(dbi, "jpg", out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return out;
     }
 
     public File exclusion(String ref) {
@@ -83,6 +123,9 @@ public class Imageprocessing {
                 orig.getHeight(),
                 BufferedImage.TYPE_INT_RGB);
         g2 = result.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(orig, 0, 0, null);
         g2.drawImage(overlay, 0, 0, null);
         g2.dispose();

@@ -3,6 +3,7 @@ package main.java.de.jez_lynn.widgetCreator.handler;
 import main.java.de.jez_lynn.widgetCreator.reference.Reference;
 import org.apache.commons.net.ftp.FTPClient;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Paths;
 
@@ -32,14 +33,18 @@ public final class FTPUploadHandler {
         client.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
     }
 
-    public boolean transferData(File localFile) {
+    public boolean transferData(File localFile, boolean isMain) {
         System.out.println("Transfering: " + localFile.getAbsolutePath());
         String remotePath = "/images/" + Paths.get(localFile.getAbsolutePath()).getFileName().toString();
         System.out.println("To: " + remotePath);
         InputStream is = null;
         boolean done = false;
         try {
-            is = new FileInputStream(localFile);
+            File scaled;
+            if (isMain)
+                scaled = Imageprocessing.scale(localFile.getAbsolutePath(), BufferedImage.TYPE_INT_RGB, 390, 265);
+            else scaled = Imageprocessing.scale(localFile.getAbsolutePath(), BufferedImage.TYPE_INT_RGB, 280, 182);
+            is = new FileInputStream(scaled);
             done = client.storeFile(remotePath, is);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

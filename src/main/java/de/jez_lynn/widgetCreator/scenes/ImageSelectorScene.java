@@ -185,12 +185,12 @@ public class ImageSelectorScene {
                 FTPUploadHandler ftp = new FTPUploadHandler();
                 while (it.hasNext()) {
                     Map.Entry<String, UploadData> pair = it.next();
-                    ftp.transferData(pair.getValue().image);
+                    ftp.transferData(pair.getValue().image, pair.getValue().isMain());
                     //it.remove();
                 }
                 ftp.close();
                 Stage htmlCode = new Stage();
-                HTMLCodeScene htmlCodeScene = new HTMLCodeScene(htmlCode, data);
+                HTMLCodeScene htmlCodeScene = new HTMLCodeScene(data, false);
                 htmlCode.initModality(Modality.WINDOW_MODAL);
                 htmlCode.setScene(htmlCodeScene.getScene());
                 htmlCode.initOwner(stage.getScene().getWindow());

@@ -3,7 +3,6 @@ package main.java.de.jez_lynn.widgetCreator.scenes;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import main.java.de.jez_lynn.widgetCreator.helper.UploadData;
 import main.java.de.jez_lynn.widgetCreator.reference.Reference;
 
@@ -19,12 +18,18 @@ public class HTMLCodeScene {
 
     Scene scene;
     HashMap<String, UploadData> data;
+    boolean testing = false;
 
-    public HTMLCodeScene(Stage stage, HashMap<String, UploadData> data) {
-        BorderPane pane = new BorderPane();
+    public HTMLCodeScene(HashMap<String, UploadData> data, boolean testing) {
         this.data = data;
-        pane.setTop(codeWrapper());
-        scene = new Scene(pane, 800, 400);
+        this.testing = testing;
+        if (!testing) {
+            BorderPane pane = new BorderPane();
+            TextArea area = new TextArea();
+            area.setText(codeWrapper());
+            pane.setTop(area);
+            scene = new Scene(pane, 800, 400);
+        }
     }
 
     /**
@@ -32,10 +37,9 @@ public class HTMLCodeScene {
      *
      * @return filled TextArea
      */
-    public TextArea codeWrapper() {
-        TextArea area = new TextArea();
+    public String codeWrapper() {
         StringBuilder sb = new StringBuilder();
-        HashMap<String, String> descriptions = new HashMap<String, String>(32);
+        HashMap<String, UploadData> descriptions = new HashMap<String, UploadData>(32);
         Map.Entry<String, String> sideInfo = new AbstractMap.SimpleEntry<String, String>("", "");
 
         //Begin the widget with the top holder part
@@ -43,10 +47,11 @@ public class HTMLCodeScene {
         Iterator<String> it = data.keySet().iterator();
         while (it.hasNext()) {
             UploadData uData = data.get(it.next());
+            System.out.println(uData.title);
             //find the main Image and add it to the first Image line
             if (uData.isMain()) {
                 it.remove();
-                String bigImage = String.format(Reference.WIDGET.bigImage, Reference.FTP.SERVER + "/images/" + uData.filename(), uData.name(), uData.name());
+                String bigImage = String.format(Reference.WIDGET.bigImage, uData.ftpPath(), uData.name());
                 sb.append(bigImage);
                 sideInfo = new AbstractMap.SimpleEntry<String, String>(uData.title, uData.description);
             }
@@ -59,7 +64,7 @@ public class HTMLCodeScene {
             it.remove();
 
             sb.append(String.format(Reference.WIDGET.smallImage, smallFirstLine.title, smallFirstLine.name(), smallFirstLine.ftpPath()));
-            descriptions.put(smallFirstLine.title, smallFirstLine.description);
+            descriptions.put(smallFirstLine.title, smallFirstLine);
         }
 
         while (it.hasNext()) {
@@ -73,21 +78,21 @@ public class HTMLCodeScene {
 
             String everyOtherLine = String.format(Reference.WIDGET.secondLine, first.title, first.name(), first.ftpPath(), second.title, second.name(), second.ftpPath());
             sb.append(everyOtherLine);
-            descriptions.put(first.title, first.description);
-            descriptions.put(second.title, second.description);
+            descriptions.put(first.title, first);
+            descriptions.put(second.title, second);
         }
         sb.append(String.format(Reference.WIDGET.sideInformation, sideInfo.getKey(), sideInfo.getValue()));
 
-        Iterator<Map.Entry<String, String>> description = descriptions.entrySet().iterator();
+        Iterator<Map.Entry<String, UploadData>> description = descriptions.entrySet().iterator();
 
         while (description.hasNext()) {
-            Map.Entry<String, String> d = description.next();
+            Map.Entry<String, UploadData> d = description.next();
             sb.append(Reference.WIDGET.beginProjectDescription);
-            sb.append(String.format(Reference.WIDGET.projectDescription, d.getKey(), d.getValue()));
+            sb.append(String.format(Reference.WIDGET.projectDescription, d.getValue().name(), d.getKey(), d.getValue().description));
             sb.append(Reference.WIDGET.endProjectDescription);
         }
-        area.setText(sb.toString());
-        return area;
+
+        return sb.toString();
     }
 
     public Scene getScene() {

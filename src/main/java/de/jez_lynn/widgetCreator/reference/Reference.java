@@ -22,17 +22,19 @@ public final class Reference {
 
     public static final class WIDGET{
 
-        public static final String topHolder =  "<div id=\"content-holder\">\n"+
+        public static final String topHolder = "<div class=\"spacer-top\">\n" +
+                "</div>" +
+                "<div id=\"content-holder\">\n" +
                                                     "<div class=\"clear\">\n"+
                                                     "</div>\n"+
                                                     "\n"+
                                                     "<div id=\"content-box\">\n"+
                                                         "<div id=\"first-line\">\n";
 
-        public static final String bigImage = "<img src=\"%s\" id=\"%s\" alt=\"\" name=\"%s\" />\n";
+        public static final String bigImage = "<img src=\"%s\" id=\"bigImage\" alt=\"\" name=\"%s\" />\n";
 
         public static final String smallImage =             "<div data-content=\"%s\" class=\"grow-small pic\">\n"+
-                "<a href=\"#%s\"><img src=\"%s\" alt=\"\" /> </a>\n" +
+                "<a href=\"#%s\"><img src=\"%s\" /></a>\n" +
                                                             "</div>\n"+
                                                         "</div>\n";
 
@@ -41,11 +43,11 @@ public final class Reference {
                                                             "\n"+
                                                             "<div id=\"second-line\">\n"+
                                                                 "<div data-content=\"%s\" class=\"grow-small pic\">\n"+
-                                                                    "<a href=\"#%s\"><img src=\"%s\" alt=\"\" /></a>\n"+
+                "<a href=\"#%s\"><img src=\"%s\" /></a>\n" +
                                                                 "</div>\n"+
                                                             "\n"+
                                                                 "<div data-content=\"%s\" class=\"grow-small pic\">\n"+
-                                                                    "<a href=\"#%s\"><img src=\"%s\" alt=\"\" /></a>\n"+
+                "<a href=\"#%s\"><img src=\"%s\" /></a>\n" +
                                                                 "</div>\n"+
                                                             "</div>\n"+
                                                         "</div>\n";
@@ -66,7 +68,7 @@ public final class Reference {
 
         public static final String beginProjectDescription = "<div class=\"content-holder-projects\">";
 
-        public static final String projectDescription = "<a name=\"food\"><h1 id=\"food\">%s</h1></a>" +
+        public static final String projectDescription = "<a name=\"%s\"><h1>%s</h1></a>" +
                 "<p>%s</p>";
 
         public static final String endProjectDescription = "</div> " +
