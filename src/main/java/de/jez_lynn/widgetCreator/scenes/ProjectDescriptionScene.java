@@ -16,11 +16,11 @@ import main.java.de.jez_lynn.widgetCreator.helper.UploadData;
  */
 public class ProjectDescriptionScene {
 
+    static TextArea inputArea;
     GridPane scene;
     Image image;
     ImageView imageView;
     UploadData lastData;
-    TextArea inputArea;
     CheckBox main;
 
     public ProjectDescriptionScene(Stage stage) {
@@ -57,6 +57,11 @@ public class ProjectDescriptionScene {
         scene.add(inputArea, 0, 2);
 
         scene.setVisible(false);
+    }
+
+    public static void saveData(UploadData data) {
+        System.out.println(inputArea.getText());
+        data.description = inputArea.getText();
     }
 
     public void updateScene(UploadData data) {

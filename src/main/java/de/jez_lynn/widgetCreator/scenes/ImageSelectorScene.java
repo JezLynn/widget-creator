@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import main.java.de.jez_lynn.widgetCreator.handler.FTPUploadHandler;
 import main.java.de.jez_lynn.widgetCreator.handler.Imageprocessing;
 import main.java.de.jez_lynn.widgetCreator.helper.UploadData;
@@ -38,12 +39,11 @@ import java.util.Map;
  */
 public class ImageSelectorScene {
 
+    private static ObservableList<String> items = FXCollections.observableArrayList();
+    private static HashMap<String, UploadData> data = new HashMap<String, UploadData>(4);
     private Scene scene;
-
     private TextField title;
     private Label path;
-    private ObservableList<String> items = FXCollections.observableArrayList();
-    private HashMap<String, UploadData> data = new HashMap<String, UploadData>(4);
     private ImageView image;
     private ProjectDescriptionScene descriptionScene;
 
@@ -119,7 +119,7 @@ public class ImageSelectorScene {
         });
         grid.add(buttonSearch, 2, 1);
 
-        Button add = new Button("Hinzufügen");
+        Button add = new Button("Hinzuf\u00fcgen");
         add.setPrefSize(100, 20);
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -160,6 +160,12 @@ public class ImageSelectorScene {
             public void handle(MouseEvent event) {
                 if (list.getSelectionModel().getSelectedItem() != null)
                     descriptionScene.updateScene(data.get(list.getSelectionModel().getSelectedItem()));
+            }
+        });
+        list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> param) {
+                return new IconListCell();
             }
         });
         scrollPane.setContent(list);
@@ -224,5 +230,71 @@ public class ImageSelectorScene {
             e.printStackTrace();
         }
         stage.close();
+    }
+
+    static class IconListCell extends ListCell<String> {
+        private GridPane grid = new GridPane();
+        private Label heading = new Label();
+        private Label delete = new Label("", new ImageView(getClass().getResource("/ico/delete.png").toExternalForm()));
+        private Label save = new Label("", new ImageView("/ico/save.png"));
+
+        public IconListCell() {
+            configureGrid();
+            configureHeading();
+            configureIcons();
+            addIcons();
+        }
+
+        private void configureGrid() {
+            grid.setHgap(10);
+            grid.setVgap(4);
+            grid.setPadding(new Insets(0, 10, 0, 10));
+        }
+
+        private void configureHeading() {
+
+        }
+
+        private void configureIcons() {
+            delete.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    clearContent();
+                }
+            });
+            save.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (heading.getText() != null && isSelected()) {
+                        ProjectDescriptionScene.saveData(data.get(heading.getText()));
+                    }
+                }
+            });
+        }
+
+        private void addIcons() {
+            grid.add(heading, 0, 0);
+            grid.add(delete, 1, 0);
+            grid.add(save, 2, 0);
+        }
+
+        private void clearContent() {
+            setText(null);
+            setGraphic(null);
+            items.remove(getIndex());
+        }
+
+        @Override
+        public void updateItem(String h, boolean empty) {
+            super.updateItem(h, empty);
+            if (empty) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                setText(null);
+                heading.setText(h);
+                setGraphic(grid);
+            }
+        }
     }
 }
