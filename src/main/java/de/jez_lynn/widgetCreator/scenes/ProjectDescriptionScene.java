@@ -1,13 +1,16 @@
 package main.java.de.jez_lynn.widgetCreator.scenes;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.java.de.jez_lynn.widgetCreator.helper.UploadData;
 
@@ -23,7 +26,7 @@ public class ProjectDescriptionScene {
     UploadData lastData;
     CheckBox main;
 
-    public ProjectDescriptionScene(Stage stage) {
+    public ProjectDescriptionScene(final Stage stage) {
         scene = new GridPane();
 
         GridPane helper = new GridPane();
@@ -40,11 +43,30 @@ public class ProjectDescriptionScene {
         scene.add(helper, 0, 0);
 
         VBox labelBox = new VBox();
+        GridPane pane = new GridPane();
         labelBox.setPadding(new Insets(15, 12, 15, 12));
         labelBox.setFillWidth(true);
         Label title = new Label("Projekt Beschreibung");
         labelBox.getChildren().add(title);
-        scene.add(labelBox, 0, 1);
+
+        ImageView link = new ImageView("/ico/link.png");
+        link.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (inputArea != null && inputArea.getSelectedText().length() > 0) {
+                    System.out.println(inputArea.getSelectedText());
+                    Stage linkStage = new Stage();
+                    LinkScene linkScene = new LinkScene(linkStage, inputArea);
+                    linkStage.initModality(Modality.WINDOW_MODAL);
+                    linkStage.setScene(linkScene.getScene());
+                    linkStage.initOwner(stage.getScene().getWindow());
+                    linkStage.show();
+                }
+            }
+        });
+        pane.add(labelBox, 0, 0);
+        pane.add(link, 1, 0);
+        scene.add(pane, 0, 1);
 
         VBox inputBox = new VBox();
         inputBox.setPadding(new Insets(15, 12, 15, 12));

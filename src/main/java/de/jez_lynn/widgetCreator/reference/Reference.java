@@ -20,6 +20,10 @@ public final class Reference {
         }
     }
 
+    public static final class HTML {
+        public static final String LINK = "<a href=\"%s\" target=\"_blank\">%s<\\a>";
+    }
+
     public static final class WIDGET{
 
         public static final String topHolder = "<div class=\"spacer-top\">\n" +

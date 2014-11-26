@@ -27,7 +27,7 @@ import java.io.File;
 public class FTPConfigureScene {
 
     private Scene scene;
-    private TextField adresseField;
+    private TextField addressField;
     private TextField userField;
     private TextField passField;
 
@@ -60,12 +60,12 @@ public class FTPConfigureScene {
         header.setFont(new Font("Cambria", 16));
         grid.add(header, 0, 0);
 
-        final Label adressLabel = new Label("Server-Adresse: ");
-        adressLabel.setTextFill(Color.web("#ffffff"));
-        adressLabel.setFont(new Font("Cambria", 16));
-        adresseField = new TextField();
-        grid.add(adressLabel, 0, 1);
-        grid.add(adresseField, 1, 1);
+        final Label addressLabel = new Label("Server-Adresse: ");
+        addressLabel.setTextFill(Color.web("#ffffff"));
+        addressLabel.setFont(new Font("Cambria", 16));
+        addressField = new TextField();
+        grid.add(addressLabel, 0, 1);
+        grid.add(addressField, 1, 1);
 
         final Label userLabel = new Label("Benutzername: ");
         userLabel.setTextFill(Color.web("#ffffff"));
@@ -94,7 +94,7 @@ public class FTPConfigureScene {
         save.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String address = adresseField.getText();
+                String address = addressField.getText();
                 String user = userField.getText();
                 String pass = passField.getText();
                 if (address.length() > 0 & user.length() > 0 & pass.length() > 0) {
